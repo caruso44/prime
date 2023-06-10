@@ -1,42 +1,49 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, Alert, StyleSheet } from 'react-native';
-import axios from 'axios';
+import { Alert, Button, StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useState } from "react";
+
+import axios from "axios";
 
 const MyScreen = () => {
-  const [number, setNumber] = useState('');
-  const [inputValue, setInputValue] = useState('');
+  const [number, setNumber] = useState("");
+  const [data, setData] = useState(null);
 
   const handleRequest = () => {
-    // Faz a requisição HTTP GET
     axios
       .get(`http://yourip:8080/api/data/${number}`)
       .then((response) => {
-        // Lida com a resposta da requisição
         const data = response.data;
-        // Faça o que quiser com os dados retornados
-
-        // Exemplo: exibindo um alerta com os dados retornados
-        Alert.alert('Dados recebidos', JSON.stringify(data));
+        setData(data);
       })
       .catch((error) => {
-        // Lida com erros da requisição
         console.error(error);
-        // Exemplo: exibindo um alerta de erro
-        Alert.alert('Erro', 'Ocorreu um erro na requisição.');
+        Alert.alert("Error", "Nework error.");
       });
   };
 
   return (
     <View style={styles.container}>
-      <TextInput
+      <Text style={styles.header}>Simple Prime Decomposition</Text>
+
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Number to decompose</Text>
+        <TextInput
           style={styles.input}
-          placeholder="Digite um número"
+          placeholder="Enter a number"
           value={number}
           onChangeText={(text) => setNumber(text)}
           keyboardType="numeric"
         />
+      </View>
 
-      <Button title="Enviar" onPress={handleRequest} />
+      <Button title="Send" onPress={handleRequest} style={styles.button} />
+
+      {data && (
+        <View style={styles.resultContainer}>
+          <Text style={styles.resultText}>
+            {data.p1} x {data.p2} = {number}
+          </Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -44,8 +51,52 @@ const MyScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F2F7FC",
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    fontFamily: "Roboto",
+    color: "#3366CC",
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+    fontFamily: "Roboto",
+    color: "#3366CC",
+  },
+  input: {
+    width: 200,
+    height: 40,
+    borderWidth: 1,
+    borderColor: "#3366CC",
+    borderRadius: 5,
+    paddingLeft: 10,
+    fontFamily: "Roboto",
+    color: "#000000",
+    backgroundColor: "#FFFFFF",
+  },
+  button: {
+    borderRadius: 10,
+    backgroundColor: "#3366CC",
+  },
+  resultContainer: {
+    marginTop: 20,
+    borderWidth: 1,
+    borderColor: "#3366CC",
+    padding: 10,
+    backgroundColor: "#FFFFFF",
+  },
+  resultText: {
+    fontSize: 16,
+    fontFamily: "Roboto",
+    color: "#3366CC",
   },
 });
 
