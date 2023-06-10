@@ -20,6 +20,11 @@ const MyScreen = () => {
       });
   };
 
+  const text =
+    data?.p1 && data?.p2
+      ? `${data.p1} x ${data.p2} = ${data.p1 * data.p2}`
+      : "No decomposition as product of two primes";
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Simple Prime Decomposition</Text>
@@ -39,9 +44,7 @@ const MyScreen = () => {
 
       {data && (
         <View style={styles.resultContainer}>
-          <Text style={styles.resultText}>
-            {data.p1} x {data.p2} = {number}
-          </Text>
+          <Text style={styles.resultText}>{text}</Text>
         </View>
       )}
     </View>
